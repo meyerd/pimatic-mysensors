@@ -74,7 +74,23 @@ module.exports = {
          description: "Show battery level with Sensors"
          type: "boolean"
          default: no    
-    },  
+    },
+  MySensorsPulseMultimeter: {
+    title: "MySensorsPulseMultimeter config options"
+    type: "object"
+    extensions: ["xLink", "xAttributeOptions"]
+    properties:
+      nodeid:
+        description: "The unique id of the node that sends or should receive the message"
+        type: "number"
+      sensorid:
+        description: "This is the child-sensor-ids that uniquely identifies one attached sensor"
+        type: "number"
+      batterySensor:
+         description: "Show battery level with Sensors"
+         type: "boolean"
+         default: no
+    },
   MySensorsPIR: {
     title: "MySensorsPIR config options"
     type: "object"
