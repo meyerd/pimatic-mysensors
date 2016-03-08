@@ -20,6 +20,7 @@ Controllers
   * Lux Sensor
   * Gas Sensor ( ppm )
   * PulseMeter ( wattage/Ampere )
+  * Multimeter ( Voltage/Current )
   * Multi Sensor support as one device.
   * support for sending Custom Value msg to mysensor node ( using Action Provider/Handler )
   * more to be add.. :)

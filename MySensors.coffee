@@ -328,6 +328,7 @@ module.exports = (env) ->
         MySensorsSwitch
         MySensorsDimmer
         MySensorsPulseMeter
+	MySensorsMultimeter
         MySensorsButton
         MySensorsLight
         MySensorsLux
@@ -658,6 +659,72 @@ module.exports = (env) ->
     getKWh: -> Promise.resolve @_kwh
     getBattery: -> Promise.resolve @_batterystat
     getAmpere: -> Promise.resolve @_ampere
+
+  class MySensorsMultimeter extends env.devices.Device
+
+    constructor: (@config,lastState, @board) ->
+      @id = config.id
+      @name = config.name
+
+      @_voltage = lastState?.voltage?.value
+      @_current = lastState?.current?.value
+      @_batterystat = lastState?.batterystat?.value
+
+      env.logger.debug "MySensorsMultimeter " , @id , @name
+
+      @attributes = {}
+
+      @attributes.voltage = {
+        description: "the measured Voltage"
+        type: "number"
+        unit: 'V'
+        acronym: 'Volt'
+      }
+
+      @attributes.battery = {
+        description: "Display the Battery level of Sensor"
+        type: "number"
+        unit: '%'
+        acronym: 'BATT'
+        hidden: !@config.batterySensor
+       }
+
+      @attributes.current = {
+        description: "the messured Current"
+        type: "number",
+        unit: "A"
+        acronym: 'Ampere'
+       }
+
+      @board.on("rfValue", (result) =>
+        if result.sender is @config.nodeid
+          if result.sensor is  @config.sensorid
+            env.logger.debug "<- MySensorsMultimeter" , result
+            if result.type is V_VOLTAGE
+	      env.logger.debug "<- MySensorsMultimeter V_VOLTAGE"
+              @_voltage = parseFloat(result.value)
+              @emit "voltage", @_voltage
+	    if result.type is V_CURRENT
+	      env.logger.debug "<- MySensorsMultimeter V_CURRENT"
+	      @_current = parseFloat(result.value)
+	      @emit "current", @_current
+      )
+
+      @board.on("rfbattery", (result) =>
+         if result.sender is @config.nodeid
+          unless result.value is null or undefined
+            # When the battery is to low, battery percentages higher then 100 could be send
+            if result.value > 100
+              result.value = 0
+
+            @_batterystat =  parseInt(result.value)
+            @emit "battery" , @_batterystat
+      )
+      super()
+
+    getCurrent: -> Promise.resolve @_current
+    getVoltage: -> Promise.resolve @_voltage
+    getBattery: -> Promise.resolve @_batterystat
 
   class MySensorsPIR extends env.devices.PresenceSensor
 
