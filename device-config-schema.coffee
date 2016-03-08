@@ -75,8 +75,8 @@ module.exports = {
          type: "boolean"
          default: no    
     },
-  MySensorsPulseMultimeter: {
-    title: "MySensorsPulseMultimeter config options"
+  MySensorsMultimeter: {
+    title: "MySensorsMultimeter config options"
     type: "object"
     extensions: ["xLink", "xAttributeOptions"]
     properties:
