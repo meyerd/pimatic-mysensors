@@ -320,22 +320,22 @@ module.exports = (env) ->
 
       @framework.ruleManager.addActionProvider(new MySensorsActionProvider @framework,@board, config)
 
-      deviceClasses = [
-        MySensorsDHT
-        MySensorsDST
-        MySensorsBMP
-        MySensorsPIR
-        MySensorsSwitch
-        MySensorsDimmer
-        MySensorsPulseMeter
-	MySensorsMultimeter
-        MySensorsButton
-        MySensorsLight
-        MySensorsLux
-        MySensorsDistance
-        MySensorsGas
-        MySensorsMulti
-      ]
+	  deviceClasses = [
+		MySensorsDHT
+		MySensorsDST
+		MySensorsBMP
+		MySensorsPIR
+		MySensorsSwitch
+		MySensorsDimmer
+		MySensorsPulseMeter
+		MySensorsMultimeter
+		MySensorsButton
+		MySensorsLight
+		MySensorsLux
+		MySensorsDistance
+		MySensorsGas
+		MySensorsMulti
+	  ]
 
       for Cl in deviceClasses
         do (Cl) =>
@@ -698,7 +698,7 @@ module.exports = (env) ->
 
       @board.on("rfValue", (result) =>
         if result.sender is @config.nodeid
-          if result.sensor is  @config.sensorid
+          if result.sensor is @config.sensorid
             env.logger.debug "<- MySensorsMultimeter" , result
             if result.type is V_VOLTAGE
 	      env.logger.debug "<- MySensorsMultimeter V_VOLTAGE"
