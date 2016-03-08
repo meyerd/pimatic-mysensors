@@ -701,13 +701,13 @@ module.exports = (env) ->
           if result.sensor is @config.sensorid
             env.logger.debug "<- MySensorsMultimeter" , result
             if result.type is V_VOLTAGE
-          env.logger.debug "<- MySensorsMultimeter V_VOLTAGE"
+              env.logger.debug "<- MySensorsMultimeter V_VOLTAGE"
               @_voltage = parseFloat(result.value)
               @emit "voltage", @_voltage
-        if result.type is V_CURRENT
-          env.logger.debug "<- MySensorsMultimeter V_CURRENT"
-          @_current = parseFloat(result.value)
-          @emit "current", @_current
+            if result.type is V_CURRENT
+              env.logger.debug "<- MySensorsMultimeter V_CURRENT"
+              @_current = parseFloat(result.value)
+              @emit "current", @_current
       )
 
       @board.on("rfbattery", (result) =>
